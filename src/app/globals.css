@@ -43,6 +43,10 @@
   --color-orange-accent: #f97316;
   --color-blue-accent: #3b82f6;
 
+  /* Colors - Diff */
+  --color-diff-added-bg: #0a1a0f;
+  --color-diff-removed-bg: #1a0a0a;
+
   /* Radius */
   --radius-none: 0px;
   --radius-m: 16px;
