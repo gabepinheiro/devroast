@@ -8,6 +8,9 @@
   --font-mono:
     "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
+  --font-plex:
+    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 
   /* Spacing */
   --spacing-xs: 4px;
@@ -46,6 +49,18 @@
   /* Colors - Diff */
   --color-diff-added-bg: #0a1a0f;
   --color-diff-removed-bg: #1a0a0a;
+
+  /* Container max-widths */
+  --max-width-page: 1280px;
+  --max-width-editor: 780px;
+  --max-width-content: 960px;
+
+  /* Colors - Code */
+  --color-text-code: #a0a0a0;
+  --color-text-comment: #8b8b8b;
+
+  /* Font sizes */
+  --text-2xs: 0.8125rem;
 
   /* Radius */
   --radius-none: 0px;
