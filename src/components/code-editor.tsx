@@ -1,11 +1,7 @@
 "use client";
 
 import type { LanguageId } from "@/components/language-selector";
-import {
-  LANGUAGES,
-  LanguageSelector,
-  mapHljsToShiki,
-} from "@/components/language-selector";
+import { LANGUAGES, LanguageSelector, mapHljsToShiki } from "@/components/language-selector";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   type BundledLanguage,
@@ -21,9 +17,7 @@ const SHIKI_THEME = "vesper";
 
 // Singleton highlighter — created once, reused across renders.
 // Starts with theme only; grammars are loaded on demand.
-let highlighterPromise: Promise<
-  HighlighterGeneric<BundledLanguage, BundledTheme>
-> | null = null;
+let highlighterPromise: Promise<HighlighterGeneric<BundledLanguage, BundledTheme>> | null = null;
 const loadedLangs = new Set<string>();
 
 function getHighlighter() {
@@ -69,9 +63,7 @@ type CodeEditorProps = {
 function CodeEditor({ onChange, onLanguageChange }: CodeEditorProps) {
   const [code, setCode] = useState("");
   const [highlightedHtml, setHighlightedHtml] = useState("");
-  const [detectedLanguage, setDetectedLanguage] = useState<LanguageId | null>(
-    null,
-  );
+  const [detectedLanguage, setDetectedLanguage] = useState<LanguageId | null>(null);
   const [userLanguage, setUserLanguage] = useState<LanguageId | null>(null);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -108,34 +100,27 @@ function CodeEditor({ onChange, onLanguageChange }: CodeEditorProps) {
   }, []);
 
   // Highlight code with the singleton Shiki highlighter
-  const highlight = useCallback(
-    async (text: string, lang: LanguageId | null) => {
-      if (!text.trim()) {
-        setHighlightedHtml("");
-        return;
-      }
+  const highlight = useCallback(async (text: string, lang: LanguageId | null) => {
+    if (!text.trim()) {
+      setHighlightedHtml("");
+      return;
+    }
 
-      const seq = ++highlightSeqRef.current;
-      try {
-        const shikiLang =
-          lang && LANGUAGES.some((l) => l.id === lang) ? lang : "text";
-        const html = await highlightCode(text, shikiLang);
-        // Only apply if this is still the latest request
-        if (seq === highlightSeqRef.current) {
-          setHighlightedHtml(html);
-        }
-      } catch {
-        if (seq === highlightSeqRef.current) {
-          const escaped = text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-          setHighlightedHtml(`<pre><code>${escaped}</code></pre>`);
-        }
+    const seq = ++highlightSeqRef.current;
+    try {
+      const shikiLang = lang && LANGUAGES.some((l) => l.id === lang) ? lang : "text";
+      const html = await highlightCode(text, shikiLang);
+      // Only apply if this is still the latest request
+      if (seq === highlightSeqRef.current) {
+        setHighlightedHtml(html);
       }
-    },
-    [],
-  );
+    } catch {
+      if (seq === highlightSeqRef.current) {
+        const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        setHighlightedHtml(`<pre><code>${escaped}</code></pre>`);
+      }
+    }
+  }, []);
 
   // Auto-detect language with highlight.js (lazy-loaded)
   const detectLanguage = useCallback(async (text: string) => {
@@ -296,21 +281,18 @@ function CodeEditor({ onChange, onLanguageChange }: CodeEditorProps) {
         const lineStart = beforeSelection.lastIndexOf("\n") + 1;
         const afterSelection = value.substring(selectionEnd);
         const nextNewline = afterSelection.indexOf("\n");
-        const lineEnd =
-          nextNewline === -1 ? value.length : selectionEnd + nextNewline;
+        const lineEnd = nextNewline === -1 ? value.length : selectionEnd + nextNewline;
         const selectedText = value.substring(lineStart, lineEnd);
         const dedented = selectedText
           .split("\n")
           .map((line) => (line.startsWith(TAB) ? line.slice(TAB.length) : line))
           .join("\n");
         const diff = selectedText.length - dedented.length;
-        const newValue =
-          value.substring(0, lineStart) + dedented + value.substring(lineEnd);
+        const newValue = value.substring(0, lineStart) + dedented + value.substring(lineEnd);
         textarea.value = newValue;
         textarea.selectionStart = Math.max(
           lineStart,
-          selectionStart -
-            (selectedText.split("\n")[0].startsWith(TAB) ? TAB.length : 0),
+          selectionStart - (selectedText.split("\n")[0].startsWith(TAB) ? TAB.length : 0),
         );
         textarea.selectionEnd = selectionEnd - diff;
         handleChange(newValue);
