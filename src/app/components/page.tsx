@@ -1,7 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { CodeBlock } from "@/components/ui/code-block";
+import {
+  CodeBlock,
+  CodeBlockContent,
+  CodeBlockDots,
+  CodeBlockFilename,
+  CodeBlockHeader,
+} from "@/components/ui/code-block";
 import { DiffLine } from "@/components/ui/diff-line";
 import { LeaderboardRow } from "@/components/ui/leaderboard-row";
 import { ScoreRing } from "@/components/ui/score-ring";
@@ -112,11 +118,13 @@ export default function ComponentsPage() {
           <span className="text-accent-green">{"// "}</span>
           <span className="text-text-primary">code_block</span>
         </h2>
-        <div className="w-[560px]">
-          <CodeBlock lang="javascript" filename="roast.js">
-            {codeExample}
-          </CodeBlock>
-        </div>
+        <CodeBlock className="w-[560px]">
+          <CodeBlockHeader className="h-10 justify-between px-4">
+            <CodeBlockDots />
+            <CodeBlockFilename>roast.js</CodeBlockFilename>
+          </CodeBlockHeader>
+          <CodeBlockContent lang="javascript">{codeExample}</CodeBlockContent>
+        </CodeBlock>
       </section>
 
       {/* DiffLine */}
