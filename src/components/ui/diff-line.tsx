@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const diffLineVariants = tv({
-  base: "flex items-center gap-2 px-4 py-2 font-mono text-3.25 w-full",
+  base: "flex items-center gap-2 px-4 py-2 font-mono text-xs w-full",
   variants: {
     variant: {
       added: "bg-diff-added-bg text-text-primary",
@@ -31,15 +31,23 @@ const diffPrefixVariants = tv({
 
 const prefixMap = { added: "+", removed: "-", context: " " } as const;
 
-type DiffLineProps = ComponentProps<"div"> & VariantProps<typeof diffLineVariants>;
+type DiffLineProps = ComponentProps<"div"> &
+  VariantProps<typeof diffLineVariants>;
 
-function DiffLine({ className, variant = "context", children, ...props }: DiffLineProps) {
+function DiffLine({
+  className,
+  variant = "context",
+  children,
+  ...props
+}: DiffLineProps) {
   return (
     <div className={diffLineVariants({ variant, className })} {...props}>
-      <span className={diffPrefixVariants({ variant })}>{prefixMap[variant ?? "context"]}</span>
+      <span className={diffPrefixVariants({ variant })}>
+        {prefixMap[variant ?? "context"]}
+      </span>
       <span>{children}</span>
     </div>
   );
 }
 
-export { DiffLine, type DiffLineProps, diffLineVariants };
+export { DiffLine, diffLineVariants, type DiffLineProps };

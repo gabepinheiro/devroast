@@ -63,7 +63,7 @@ async function CodeBlockContent({
 
   return (
     <div className={codeBlockContentVariants({ className })}>
-      <div className="flex w-10 shrink-0 flex-col items-end border-r border-border-primary bg-bg-surface px-2.5 py-3 font-mono text-3.25 leading-4.75 text-text-tertiary select-none">
+      <div className="flex w-10 shrink-0 flex-col items-end border-r border-border-primary bg-bg-surface px-2.5 py-3 font-mono text-xs leading-4.75 text-text-tertiary select-none">
         {Array.from({ length: lineCount }, (_, i) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: static line number list
           <span key={i}>{i + 1}</span>
