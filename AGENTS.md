@@ -6,13 +6,15 @@ DevRoast is a code roasting app where users paste code snippets and receive brut
 
 ## Stack
 
-Next.js 16 (App Router), React 19, Tailwind CSS v4, TypeScript. Formatter/linter: Biome. Package manager: pnpm.
+Next.js 16 (App Router), React 19, Tailwind CSS v4, TypeScript, tRPC v11, TanStack React Query v5. Formatter/linter: Biome. Package manager: pnpm.
 
 ## Project Structure
 
 - `src/app/` — Pages and layouts (App Router)
 - `src/components/ui/` — Reusable UI primitives (Button, Toggle, Badge, Card, etc.)
 - `src/components/` — Page-level composition components (Navbar, CodeEditor, etc.)
+- `src/trpc/` — tRPC API layer (routers, context, client/server integration)
+- `src/db/` — Drizzle ORM schema, queries and migrations
 - `src/app/globals.css` — All design tokens under `@theme`
 
 ## Coding Rules
@@ -22,3 +24,9 @@ Next.js 16 (App Router), React 19, Tailwind CSS v4, TypeScript. Formatter/linter
 - **Dark theme only.** All design tokens assume a dark background (`#0a0a0a`).
 - **Monospace-first.** Primary font is JetBrains Mono (`font-mono`). IBM Plex Mono (`font-plex`) is used for secondary/hint text.
 - **Navbar** lives in the root layout (`layout.tsx`) and is shared across all pages. Page content is wrapped in a `max-w-page` centered container.
+
+## Data Flow
+
+- **All data access goes through tRPC procedures.** Components never import from `src/db/queries.ts` directly. tRPC procedures in `src/trpc/routers/` delegate to the query functions — tRPC is the transport/contract layer, Drizzle is the data layer.
+- **Avoid `useEffect`** for data fetching or state derived from server data. Always use tRPC + React Query (`useQuery`, `useSuspenseQuery`, `useMutation`). Reserve `useEffect` only for browser-only side effects with no declarative alternative.
+- **Prefetch on the server, consume on the client.** Server Components call `prefetch(trpc.*.queryOptions())` and wrap the subtree in `<HydrateClient>`. Client Components consume via `useQuery` or `useSuspenseQuery` — the hydrated cache avoids a redundant HTTP round-trip.

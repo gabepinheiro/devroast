@@ -18,6 +18,7 @@ export const trpc = createTRPCOptionsProxy({
   queryClient: getQueryClient,
 });
 
+// biome-ignore lint/suspicious/noExplicitAny: TRPCQueryOptions generic requires any to accept all procedure types
 export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(queryOptions: T) {
   const queryClient = getQueryClient();
   if (queryOptions.queryKey[1]?.type === "infinite") {
